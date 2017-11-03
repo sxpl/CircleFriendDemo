@@ -1,0 +1,79 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION as int
+    buildToolsVersion BUILD_TOOLS_VERSION
+    defaultConfig {
+        applicationId "com.thoughtworks.circledemo"
+        minSdkVersion MINSDK_VERSION as int
+        targetSdkVersion TARGETSDK_VERSION as int
+        versionCode 1
+        versionName "1.0"
+    }
+    buildTypes {
+        release {
+            // 移除无用的resource文件
+            shrinkResources true
+            zipAlignEnabled true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    aaptOptions {
+        cruncherEnabled = false
+        useNewCruncher = false
+    }
+    dexOptions {
+        threadCount 4
+        preDexLibraries = false
+        javaMaxHeapSize "4g"
+    }
+    packagingOptions {
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/ASL2.0'
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/RELEASE_NOTES.txt'
+    }
+    lintOptions {
+        quiet true
+        abortOnError false
+        ignoreWarnings false
+        disable "ResourceType"
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    /**
+     * 配置生成的apk打包的名称
+     */
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                if (variant.buildType.name.equals('debug')) {
+                    def fileName = "CircleFriend_App_Debug.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                } else {
+                    def fileName = "CircleFriend_App_Release.apk"
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+        }
+    }
+}
+ext {
+    supportLibraryVersion = project.ANDROID_SUPPORT_LIBRARY_VERSION
+}
+
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+    // 添加下拉刷新库
+    compile 'com.malinskiy:superrecyclerview:1.1.4'
+}

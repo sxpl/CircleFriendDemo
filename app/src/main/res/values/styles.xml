@@ -1,0 +1,68 @@
+<resources>
+
+    <!--
+       Base application theme, dependent on API level. This theme is replaced
+       by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+
+
+   -->
+    <style name="AppBaseTheme" parent="android:Theme.Black.NoTitleBar">
+        <!--
+            Theme customizations available in newer API levels can go in
+            res/values-vXX/styles.xml, while customizations related to
+            backward-compatibility can go here.
+
+
+        -->
+    </style>
+
+    <!-- Application theme. -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+    <!-- 标题样式 -->
+    <style name="titleStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/public_title_height</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:background">@drawable/title_bg</item>
+    </style>
+
+    <style name="left_title_style">
+        <item name="android:onClick">back</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_alignParentLeft">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:textColor">@color/title_text_color</item>
+        <item name="android:layout_marginLeft">@dimen/common_margin_smaller</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="titleTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/txt_size_20</item>
+        <item name="android:textColor">@color/title_text_color</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <!-- 通用EditView样式 -->
+    <style name="PublicEditViewStyle">
+        <item name="android:layout_width">0dip</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:minHeight">@dimen/public_edit_view_height</item>
+        <item name="android:background">@drawable/public_corner_bg</item>
+        <item name="android:textSize">@dimen/txt_size_16</item>
+        <item name="android:textColor">@color/gray_txt</item>
+        <item name="android:textColorHint">@color/gray_txt_light</item>
+        <item name="android:paddingTop">3dip</item>
+        <item name="android:paddingBottom">3dip</item>
+        <item name="android:paddingRight">6dip</item>
+        <item name="android:paddingLeft">6dip</item>
+        <item name="android:gravity">left|center_vertical</item>
+        <item name="android:singleLine">true</item>
+    </style>
+</resources>

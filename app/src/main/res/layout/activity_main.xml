@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/layout_background">
+
+    <RelativeLayout
+        android:id="@+id/top"
+        style="@style/titleStyle">
+
+        <ImageView
+            android:id="@+id/iv_back"
+            style="@style/left_title_style"
+            android:src="@drawable/public_back" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            style="@style/titleTextStyle"
+            android:text="班级圈" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/bodyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top">
+
+        <com.malinskiy.superrecyclerview.SuperRecyclerView xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/recyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_moreProgress="@layout/bottom_more_progress"
+            app:mainLayoutId="@layout/layout_recyclerview_verticalscroll"
+            app:recyclerClipToPadding="true"
+            app:scrollbarStyle="outsideOverlay" />
+
+        <include
+            layout="@layout/layout_editview"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
+</RelativeLayout>
