@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/click_white_bg"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:paddingTop="5dp">
+
+        <ImageView
+            android:id="@+id/album_picture"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_marginTop="3dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/im_pub_no_image" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="3dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/album_user_name_txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:maxLines="1"
+                android:text="王老师"
+                android:textColor="#7eb158"
+                android:textSize="14sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/album_content_txt"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dimen_05"
+                android:background="@drawable/click_white_bg"
+                android:ellipsize="end"
+                android:focusable="false"
+                android:lineSpacingMultiplier="1.1"
+                android:paddingBottom="5dp"
+                android:text="内容内容内容内内容内容内容内容内容内容内容内容内容内容内容容内容"
+                android:textColor="#888888"
+                android:textSize="14sp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="3dp"
+                android:descendantFocusability="blocksDescendants"
+                android:orientation="vertical"
+                android:paddingTop="2dp">
+
+                <com.thoughtworks.circledemo.widget.NineGridLayoutView xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/layout_nine_grid"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    app:sapcing="4dp" />
+
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dimen_05">
+
+                    <TextView
+                        android:id="@+id/album_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="1小时前"
+                        android:textColor="#989898"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/tv_delete"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/dimen_05"
+                        android:layout_toRightOf="@+id/album_time"
+                        android:maxLines="1"
+                        android:paddingLeft="@dimen/dimen_05"
+                        android:paddingRight="@dimen/dimen_05"
+                        android:text="删除"
+                        android:textColor="#7eb158"
+                        android:textSize="@dimen/txt_size_14" />
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/tv_delete"
+                        android:gravity="center_vertical">
+
+                        <LinearLayout
+                            android:id="@+id/album_praise_layout"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toLeftOf="@+id/linearlayout_comment"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/dimen_10"
+                            android:paddingRight="@dimen/dimen_10">
+
+                            <ImageView
+                                android:id="@+id/album_praise"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="4dp"
+                                android:background="@drawable/circle_dynamic_praise_n" />
+
+                            <TextView
+                                android:id="@+id/album_praise_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:gravity="center"
+                                android:text="赞"
+                                android:textColor="#989898"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/linearlayout_comment"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:orientation="horizontal"
+                            android:paddingLeft="@dimen/dimen_05">
+
+
+                            <ImageView
+                                android:id="@+id/album_comment"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="4dp"
+                                android:background="@drawable/circle_dynamic_comment" />
+
+                            <TextView
+                                android:id="@+id/album_comment_number"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="评论"
+                                android:textColor="#989898"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                </RelativeLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearlayoutAll"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dimen_05"
+                android:background="@drawable/comment_bg_icon"
+                android:orientation="vertical"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:id="@+id/album_praise_list_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:minHeight="@dimen/dimen_30"
+                    android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dimen_05"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/parise_icon"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05"
+                        android:paddingLeft="5dp"
+                        android:src="@drawable/praise_icon_s"
+                        android:visibility="gone" />
+
+                    <ListView
+                        android:id="@+id/praiseListView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dimen_05"
+                        android:gravity="center_vertical"
+                        android:lineSpacingMultiplier="1.1"
+                        android:paddingLeft="5dp"
+                        android:textColor="@color/praise_item"
+                        android:textSize="13sp" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/line"
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="#dcdcdc"
+                    android:visibility="gone" />
+
+                <ListView
+                    android:id="@+id/commentList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:cacheColorHint="@android:color/transparent"
+                    android:listSelector="#d9d9d9"
+                    android:orientation="vertical"
+                    android:paddingLeft="2dp"
+                    android:paddingRight="2dp"
+                    android:scrollbarStyle="outsideOverlay"
+                    android:scrollbars="none" />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

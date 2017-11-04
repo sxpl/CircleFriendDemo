@@ -32,4 +32,5 @@
     <color name="public_corner_border_color">#B7B7B7</color>
     <color name="gray_txt">#FF606060</color>
     <color name="gray_txt_light">#FFC8C8C8</color>
+    <color name="click_bg">#e9e9e9</color>
 </resources>
