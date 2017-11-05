@@ -1,0 +1,81 @@
+package com.thoughtworks.circledemo.bean;
+
+
+import java.io.Serializable;
+import java.util.List;
+
+/**
+ * =======================================================
+ * project:CircleFriend
+ * copyright：Copyright (C) 2017 SHANXI XIAN Technologies Ltd
+ * author：xszhang
+ * date：created by 2017/11/4 14:15
+ * version：V1.0
+ * descript：班级动态bean
+ * =======================================================
+ */
+public class CircleDynamicBean implements Serializable {
+    private int id;// 动态ID
+    private String dt;// 动态消息发布时间
+    private int type;// 动态内容，1为普通内容，2为链接内容，3为系统内容
+    private String content;// 动态内容
+    private SenderBean sender;//发送者用户信息
+    private List<CommentsBean> comments;//评论信息
+    private List<ImageBean> images;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDt() {
+        return dt;
+    }
+
+    public void setDt(String dt) {
+        this.dt = dt;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public SenderBean getSender() {
+        return sender;
+    }
+
+    public void setSender(SenderBean sender) {
+        this.sender = sender;
+    }
+
+    public List<CommentsBean> getComments() {
+        return comments;
+    }
+
+    public void setComments(List<CommentsBean> comments) {
+        this.comments = comments;
+    }
+
+    public List<ImageBean> getImages() {
+        return images;
+    }
+
+    public void setImages(List<ImageBean> images) {
+        this.images = images;
+    }
+}

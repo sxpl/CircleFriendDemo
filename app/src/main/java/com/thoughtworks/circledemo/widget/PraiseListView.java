@@ -14,7 +14,7 @@ import android.widget.TextView;
  * descript：自定义点赞列表view
  * =======================================================
  */
-public class PraiseListView extends TextView{
+public class PraiseListView extends TextView {
     public PraiseListView(Context context) {
         super(context);
     }

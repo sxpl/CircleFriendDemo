@@ -1,4 +1,4 @@
-package com.thoughtworks.circledemo;
+package com.thoughtworks.circledemo.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -10,8 +10,10 @@ import android.view.ViewGroup;
 
 import com.malinskiy.superrecyclerview.OnMoreListener;
 import com.malinskiy.superrecyclerview.SuperRecyclerView;
+import com.thoughtworks.circledemo.R;
 import com.thoughtworks.circledemo.adapter.CircleFriendAdapter;
-import com.thoughtworks.circledemo.bean.CircleDymincBean;
+import com.thoughtworks.circledemo.bean.CircleDynamicBean;
+import com.thoughtworks.circledemo.utils.DataTest;
 import com.thoughtworks.circledemo.widget.DivItemDecoration;
 
 import java.util.List;
@@ -93,7 +95,6 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
                 if (newState == RecyclerView.SCROLL_STATE_IDLE) {
                 } else {
                 }
-
             }
         });
     }
@@ -104,7 +105,8 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
      * @param loadType
      */
     public void loadData(int loadType) {
-        updateLoadData(loadType, null);
+        List<CircleDynamicBean> list = DataTest.getCircleDyList();
+        updateLoadData(loadType, list);
     }
 
     /**
@@ -113,7 +115,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
      * @param loadType
      * @param datas
      */
-    public void updateLoadData(int loadType, List<CircleDymincBean> datas) {
+    public void updateLoadData(int loadType, List<CircleDynamicBean> datas) {
         if (loadType == TYPE_PULL_REFRESH) { //下拉刷新
             recyclerView.setRefreshing(false);
             adapter.setDatas(datas);
