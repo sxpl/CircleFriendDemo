@@ -287,8 +287,8 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             final List<PraiseBean> praiseBeanList = circleDynamicBean.getPraiseList();
             // 处理评论列表
             final List<CommentsBean> commentsBeanList = circleDynamicBean.getComments();
-            boolean hasPraise = circleDynamicBean.hasPraise();
-            boolean hasComment = circleDynamicBean.hasComment();
+            final boolean hasPraise = circleDynamicBean.hasPraise();
+            final boolean hasComment = circleDynamicBean.hasComment();
             if (hasPraise || hasComment) {
                 this.linearlayoutAll.setVisibility(View.VISIBLE);
                 //处理点赞列表
@@ -366,6 +366,9 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                         return;
                     mLastTime = System.currentTimeMillis();
                     if ("赞".equals(likes.getText().toString().trim())) {
+                        if (!(hasPraise || hasComment)) {//如果赞和评论都为空，此处需要做处理
+                            linearlayoutAll.setVisibility(View.VISIBLE);
+                        }
                         mListener.addPraise(circlePosition);
                         // 此处可调用接口
                     } else {

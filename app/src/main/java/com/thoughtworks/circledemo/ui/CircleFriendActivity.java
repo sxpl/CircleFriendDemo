@@ -1,19 +1,23 @@
 package com.thoughtworks.circledemo.ui;
 
 import android.app.Activity;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.malinskiy.superrecyclerview.OnMoreListener;
@@ -26,6 +30,7 @@ import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.PraiseBean;
 import com.thoughtworks.circledemo.keyboard.KeyboardUtility;
 import com.thoughtworks.circledemo.utils.DataTest;
+import com.thoughtworks.circledemo.widget.CommentListView;
 import com.thoughtworks.circledemo.widget.DivItemDecoration;
 
 import java.util.List;
@@ -51,6 +56,14 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     private LinearLayout editTextBody;
     private EditText editText;
     private Button commentSend;
+    private String TAG = CircleFriendActivity.class.getSimpleName();
+    private RelativeLayout bodyLayout;
+    private int currentKeyboardH;// 当前软键盘的高度
+    private int screenHeight; // 当前屏幕高度
+    private int editTextBodyHeight; // 当前输入框的高度
+    private int selectCircleItemH; // 当前选中朋友圈的高度
+    private int selectCommentItemOffset; // 当前选中评论item的偏移量
+    private RelativeLayout topTitle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +76,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         this.initModule();
         this.initData();
         this.addListener();
+        this.setViewTreeObserver();
     }
 
     private void initModule() {
@@ -70,6 +84,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         this.editTextBody = (LinearLayout) findViewById(R.id.editTextBodyLl);
         this.editText = (EditText) findViewById(R.id.comment_et);
         this.commentSend = (Button) findViewById(R.id.comment_send);
+        this.topTitle = (RelativeLayout) findViewById(R.id.top);
         this.layoutManager = new LinearLayoutManager(this);
         this.recyclerView.setLayoutManager(layoutManager);
         this.recyclerView.addItemDecoration(new DivItemDecoration(2, true));
@@ -225,6 +240,8 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     public void updateEditTextBodyVisible(int visibility, CommentConfig config) {
         this.commentConfig = config;
         this.editTextBody.setVisibility(visibility);
+        // 计算偏移量
+        this.measureCircleItemHighAndCommentItemOffset(commentConfig);
         if (View.VISIBLE == visibility) {
             editText.requestFocus();
             //弹出键盘
@@ -294,4 +311,116 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         //清空评论文本
         this.editText.setText("");
     }
+
+    /**
+     * 计算软键盘的高度
+     */
+    private void setViewTreeObserver() {
+        bodyLayout = (RelativeLayout) findViewById(R.id.bodyLayout);
+        final ViewTreeObserver swipeRefreshLayoutVTO = bodyLayout.getViewTreeObserver();
+        swipeRefreshLayoutVTO.addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                Rect r = new Rect();
+                bodyLayout.getWindowVisibleDisplayFrame(r);
+                int statusBarH = getStatusBarHeight();//状态栏高度
+                int screenH = bodyLayout.getRootView().getHeight();
+                if (r.top != statusBarH) {
+                    //在这个demo中r.top代表的是状态栏高度，在沉浸式状态栏时r.top＝0，通过getStatusBarHeight获取状态栏高度
+                    r.top = statusBarH;
+                }
+                int keyboardH = screenH - (r.bottom - r.top);
+                Log.d(TAG, "screenH＝ " + screenH + " &keyboardH = " + keyboardH + " &r.bottom=" + r.bottom + " &top=" + r.top + " &statusBarH=" + statusBarH);
+
+                if (keyboardH == currentKeyboardH) {//有变化时才处理，否则会陷入死循环
+                    return;
+                }
+                currentKeyboardH = keyboardH;
+                screenHeight = screenH;//应用屏幕的高度
+                editTextBodyHeight = editTextBody.getHeight();
+
+                if (keyboardH < 150) {//说明是隐藏键盘的情况
+                    updateEditTextBodyVisible(View.GONE, null);
+                    return;
+                }
+                //偏移listview
+                if (layoutManager != null && commentConfig != null) {
+                    layoutManager.scrollToPositionWithOffset(commentConfig.circlePosition + CircleFriendAdapter.HEADVIEW_SIZE, getListViewOffset(commentConfig));
+                }
+            }
+        });
+    }
+
+    /**
+     * 获取状态栏高度
+     *
+     * @return
+     */
+    private int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    /**
+     * 计算偏移量
+     *
+     * @param commentConfig
+     */
+    private void measureCircleItemHighAndCommentItemOffset(CommentConfig commentConfig) {
+        if (commentConfig == null)
+            return;
+
+        int firstPosition = layoutManager.findFirstVisibleItemPosition();
+        //只能返回当前可见区域（列表可滚动）的子项
+        View selectCircleItem = layoutManager.getChildAt(commentConfig.circlePosition + CircleFriendAdapter.HEADVIEW_SIZE - firstPosition);
+
+        if (selectCircleItem != null) {
+            selectCircleItemH = selectCircleItem.getHeight();
+        }
+        if (commentConfig.commentType == CommentConfig.Type.REPLY) {
+            //回复评论的情况
+            CommentListView commentLv = (CommentListView) selectCircleItem.findViewById(R.id.commentList);
+            if (commentLv != null) {
+                //找到要回复的评论view,计算出该view距离所属动态底部的距离
+                View selectCommentItem = commentLv.getChildAt(commentConfig.commentPosition);
+                if (selectCommentItem != null) {
+                    //选择的commentItem距选择的CircleItem底部的距离
+                    selectCommentItemOffset = 0;
+                    View parentView = selectCommentItem;
+                    do {
+                        int subItemBottom = parentView.getBottom();
+                        parentView = (View) parentView.getParent();
+                        if (parentView != null) {
+                            selectCommentItemOffset += (parentView.getHeight() - subItemBottom);
+                        }
+                    } while (parentView != null && parentView != selectCircleItem);
+                }
+            }
+        }
+    }
+
+    /**
+     * 测量偏移量
+     *
+     * @param commentConfig
+     * @return
+     */
+    private int getListViewOffset(CommentConfig commentConfig) {
+        if (commentConfig == null)
+            return 0;
+        //这里如果你的listview上面还有其它占高度的控件，则需要减去该控件高度，listview的headview除外。
+        //int listviewOffset = mScreenHeight - mSelectCircleItemH - mCurrentKeyboardH - mEditTextBodyHeight;
+        int listviewOffset = screenHeight - selectCircleItemH - currentKeyboardH - editTextBodyHeight - topTitle.getHeight();
+        if (commentConfig.commentType == CommentConfig.Type.REPLY) {
+            //回复评论的情况
+            listviewOffset = listviewOffset + selectCommentItemOffset;
+        }
+        Log.i(TAG, "listviewOffset : " + listviewOffset);
+        return listviewOffset;
+    }
+
 }
