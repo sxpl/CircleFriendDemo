@@ -15,7 +15,7 @@ import java.io.Serializable;
  */
 public class UserBean implements Serializable {
     private String userId;
-    //    private String profile-image;
+//        private String profile-image;
     private String avatar;
     private String nick;
     private String username;

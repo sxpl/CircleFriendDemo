@@ -33,7 +33,14 @@ import com.thoughtworks.circledemo.utils.DataTest;
 import com.thoughtworks.circledemo.widget.CommentListView;
 import com.thoughtworks.circledemo.widget.DivItemDecoration;
 
+import java.io.IOException;
 import java.util.List;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 
 /**
  * =======================================================
@@ -64,6 +71,8 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     private int selectCircleItemH; // 当前选中朋友圈的高度
     private int selectCommentItemOffset; // 当前选中评论item的偏移量
     private RelativeLayout topTitle;
+    private OkHttpClient mHttpClient;
+    private List<CircleDynamicBean> list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +101,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     }
 
     private void initData() {
+        getTweetListData();
         //实现自动下拉刷新功能
         this.recyclerView.getSwipeToRefresh().post(new Runnable() {
             @Override
@@ -169,7 +179,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
      * @param loadType
      */
     public void loadData(int loadType) {
-        List<CircleDynamicBean> list = DataTest.getCircleDyList();
+//        List<CircleDynamicBean> list = DataTest.getCircleDyList();
         updateLoadData(loadType, list);
     }
 
@@ -188,7 +198,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         }
         adapter.notifyDataSetChanged();
         if (null != adapter.getDatas() && adapter.getDatas().size() > 0) {
-            if (adapter.getDatas().size() < 100 + CircleFriendAdapter.HEADVIEW_SIZE) {
+            if (adapter.getDatas().size() < 5 + CircleFriendAdapter.HEADVIEW_SIZE) {
                 recyclerView.setupMoreListener(new OnMoreListener() {
                     @Override
                     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
@@ -423,4 +433,28 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         return listviewOffset;
     }
 
+    /**
+     * 获取列表数据
+     */
+    public void getTweetListData() {
+        String url = "http://thoughtworks-ios.herokuapp.com/user/jsmith/tweets";
+        mHttpClient = new OkHttpClient();
+        Request request = new Request.Builder().url(url).build();
+        mHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                String json = response.body().string();
+                if (json != null) {
+                    Log.d("okHttp", json);
+                    list = DataTest.getCircleDyData(json);
+
+                }
+            }
+        });
+    }
 }

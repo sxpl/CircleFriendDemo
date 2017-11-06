@@ -192,8 +192,10 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
         public void setData(final int circlePosition, final CircleDynamicBean circleDynamicBean) {
             Log.i("[app]", "circleDynamicBean=" + circleDynamicBean);
             this.userPicture.setTag(circlePosition + "");
-            imageLoader.displayImage(circleDynamicBean.getSender().getAvatar(), this.userPicture, options);
-            this.usernameTxt.setText(circleDynamicBean.getSender().getUsername());
+            if (null != circleDynamicBean.getSender()) {
+                imageLoader.displayImage(TextUtils.isEmpty(circleDynamicBean.getSender().getAvatar()) ? "" : circleDynamicBean.getSender().getAvatar(), this.userPicture, options);
+                this.usernameTxt.setText(circleDynamicBean.getSender().getUsername());
+            }
             String dateSource = circleDynamicBean.getDt();
             this.time.setText(DateUtils.getModularizationDate(Long.parseLong(dateSource)));
             // 判断接受到的是否有表情图片，有则替换
@@ -390,7 +392,9 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             });
             // 删除功能
             this.deleteTv.setTag(circlePosition + "");
-            this.deleteTv.setText(DataTest.curUser.getId().equals(circleDynamicBean.getSender().getId()) ? "删除" : "");
+            if (null != circleDynamicBean.getSender()) {
+                this.deleteTv.setText(DataTest.curUser.getId().equals(TextUtils.isEmpty(circleDynamicBean.getSender().getId()) ? "" : circleDynamicBean.getSender().getId()) ? "删除" : "");
+            }
             this.deleteTv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

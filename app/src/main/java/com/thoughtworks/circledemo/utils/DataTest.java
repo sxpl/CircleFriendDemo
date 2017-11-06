@@ -1,11 +1,15 @@
 package com.thoughtworks.circledemo.utils;
 
 
+import com.alibaba.fastjson.JSON;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
 import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.ImageBean;
 import com.thoughtworks.circledemo.bean.PraiseBean;
 import com.thoughtworks.circledemo.bean.SenderBean;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +26,7 @@ import java.util.Random;
  * =======================================================
  */
 public class DataTest {
+    public static ArrayList<CircleDynamicBean> circleList;
     private static int commentId = 0;
     /**
      * 动态id自增长
@@ -111,6 +116,27 @@ public class DataTest {
             list.add(circleDyBean);
         }
         return list;
+    }
+
+
+    public static List<CircleDynamicBean> getCircleDyData(String json) {
+        if (json != null) {
+            try {
+                JSONArray array = new JSONArray(json);
+                circleList = new ArrayList<>();
+                for (int i = 0; i < array.length(); i++) {
+                    JSONObject jsonObject = array.getJSONObject(i);
+                    CircleDynamicBean circle = JSON.parseObject(jsonObject.toString(), CircleDynamicBean.class);
+                    circle.setId(circleId++);
+                    circle.setPraiseList(createPraiseItemList());
+                    circle.setDt(String.valueOf(System.currentTimeMillis()));
+                    circleList.add(circle);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return circleList;
     }
 
     /**
@@ -271,6 +297,7 @@ public class DataTest {
         item.setSender(curUser);
         return item;
     }
+
     /**
      * 创建回复评论
      *

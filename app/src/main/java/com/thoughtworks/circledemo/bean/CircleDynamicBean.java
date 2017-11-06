@@ -90,6 +90,21 @@ public class CircleDynamicBean implements Serializable {
         this.praiseList = praiseList;
     }
 
+    public CircleDynamicBean() {
+
+    }
+
+    public CircleDynamicBean(int id, String dt, int type, String content, SenderBean sender, List<CommentsBean> comments, List<ImageBean> images, List<PraiseBean> praiseList) {
+        this.id = id;
+        this.dt = dt;
+        this.type = type;
+        this.content = content;
+        this.sender = sender;
+        this.comments = comments;
+        this.images = images;
+        this.praiseList = praiseList;
+    }
+
     /**
      * 是否点赞
      *

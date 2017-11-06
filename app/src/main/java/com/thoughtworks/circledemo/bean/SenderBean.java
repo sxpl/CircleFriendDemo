@@ -19,6 +19,9 @@ public class SenderBean implements Serializable {
     private String nick;//用户昵称
     private String avatar;//用户头像
 
+    public SenderBean() {
+    }
+
     public SenderBean(String id, String username, String nick, String avatar) {
         this.id = id;
         this.username = username;
