@@ -1,4 +1,4 @@
-package cn.qtone.xxt.spannable;
+package com.thoughtworks.circledemo.spannable;
 
 import android.text.Layout;
 import android.text.Selection;
@@ -10,17 +10,18 @@ import android.text.style.ClickableSpan;
 import android.view.MotionEvent;
 import android.widget.TextView;
 
-import cn.qtone.xxt.ui.BaseApplication;
-import gdalbum.cn.qtone.xxt.R;
+import com.thoughtworks.circledemo.R;
+import com.thoughtworks.circledemo.ui.MyApplication;
+
 
 /**
  * =======================================================
- * 项目名称:广东和教育APP
- * 版权：Copyright (C) 2014 GuangDong QTONE Technologies Ltd
- * 作者：xszhang
- * 日期：created by 2017/9/7 17:49
- * 版本：V1.0
- * 描述：
+ * project:CircleFriend
+ * copyright：Copyright (C) 2017 SHANXI XIAN Technologies Ltd
+ * author：xszhang
+ * date：created by 2017/11/6 10:32
+ * version：V1.0
+ * descript：
  * =======================================================
  */
 public class CircleMovementMethod extends BaseMovementMethod {
@@ -52,8 +53,8 @@ public class CircleMovementMethod extends BaseMovementMethod {
     }
 
     public CircleMovementMethod() {
-        this.textViewBgColor = BaseApplication.getAppContext().getResources().getColor(DEFAULT_COLOR_ID);
-        this.clickableSpanBgClor = BaseApplication.getAppContext().getResources().getColor(DEFAULT_CLICKABLEA_COLOR_ID);
+        this.textViewBgColor = MyApplication.getContext().getResources().getColor(DEFAULT_COLOR_ID);
+        this.clickableSpanBgClor = MyApplication.getContext().getResources().getColor(DEFAULT_CLICKABLEA_COLOR_ID);
     }
 
     /**
@@ -61,7 +62,7 @@ public class CircleMovementMethod extends BaseMovementMethod {
      */
     public CircleMovementMethod(int clickableSpanBgClor) {
         this.clickableSpanBgClor = clickableSpanBgClor;
-        this.textViewBgColor = BaseApplication.getAppContext().getResources().getColor(DEFAULT_COLOR_ID);
+        this.textViewBgColor = MyApplication.getContext().getResources().getColor(DEFAULT_COLOR_ID);
     }
 
     /**

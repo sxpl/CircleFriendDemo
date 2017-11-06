@@ -2,10 +2,6 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
-
-    <color name="color_8290AF">#8290AF</color>
-    <color name="color_232323">#232323</color>
     <color name="color_aeaeae">#aeaeae</color>
     <color name="im_social_dig_name_bg">#DDDDDD</color>
     <color name="im_font_color_text_hint">#abb1b6</color>
@@ -20,11 +16,15 @@
     <color name="white">#ffffffff</color>
 
     <!--========================-->
-    <color name="praise_item_default">#333333</color>
+    <color name="praise_item_default">#7eb158</color>
     <color name="praise_item_selector_default">#cccccc</color>
-    <color name="praise_item">#8290AF</color>
-
     <color name="default_clickable_color">#cccccc</color>
+    <color name="color_8290AF">#7eb158</color>
+    <color name="praise_item">#7eb158</color>
+    <color name="color_232323">#232323</color>
+    <color name="colorAccent">#FF4081</color>
+
+
     <color name="basic_color_primary">#373b3e</color>
     <color name="layout_background">#F6F5F4</color>
     <color name="title_text_color">#333333</color>

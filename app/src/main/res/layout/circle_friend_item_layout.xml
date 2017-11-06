@@ -213,7 +213,7 @@
                     android:background="#dcdcdc"
                     android:visibility="gone" />
 
-                <ListView
+                <com.thoughtworks.circledemo.widget.CommentListView
                     android:id="@+id/commentList"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"

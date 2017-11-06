@@ -1,20 +1,21 @@
-package cn.qtone.xxt.spannable;
+package com.thoughtworks.circledemo.spannable;
 
 import android.text.TextPaint;
 import android.text.style.ClickableSpan;
 import android.view.View;
 
-import cn.qtone.xxt.ui.BaseApplication;
-import gdalbum.cn.qtone.xxt.R;
+import com.thoughtworks.circledemo.R;
+import com.thoughtworks.circledemo.ui.MyApplication;
+
 
 /**
  * =======================================================
- * 项目名称:广东和教育APP
- * 版权：Copyright (C) 2014 GuangDong QTONE Technologies Ltd
- * 作者：xszhang
- * 日期：created by 2017/9/7 17:49
- * 版本：V1.0
- * 描述：
+ * project:CircleFriend
+ * copyright：Copyright (C) 2017 SHANXI XIAN Technologies Ltd
+ * author：xszhang
+ * date：created by 2017/11/6 10:33
+ * version：V1.0
+ * descript：
  * =======================================================
  */
 public abstract class SpannableClickable extends ClickableSpan implements View.OnClickListener {
@@ -26,7 +27,7 @@ public abstract class SpannableClickable extends ClickableSpan implements View.O
     private int textColor;
 
     public SpannableClickable() {
-        this.textColor = BaseApplication.getAppContext().getResources().getColor(DEFAULT_COLOR_ID);
+        this.textColor = MyApplication.getContext().getResources().getColor(DEFAULT_COLOR_ID);
     }
 
     public SpannableClickable(int textColor) {

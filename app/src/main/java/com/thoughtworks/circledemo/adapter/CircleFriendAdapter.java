@@ -1,7 +1,9 @@
 package com.thoughtworks.circledemo.adapter;
 
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
 import android.util.Log;
@@ -17,11 +19,14 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.thoughtworks.circledemo.R;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
+import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.ImageBean;
+import com.thoughtworks.circledemo.utils.DataTest;
 import com.thoughtworks.circledemo.utils.DateUtils;
 import com.thoughtworks.circledemo.utils.Emoji;
 import com.thoughtworks.circledemo.utils.EmojiUtils;
 import com.thoughtworks.circledemo.utils.StringUtils;
+import com.thoughtworks.circledemo.widget.CommentListView;
 import com.thoughtworks.circledemo.widget.NineGridLayoutView;
 
 import java.util.ArrayList;
@@ -31,6 +36,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.thoughtworks.circledemo.R.id.commentList;
 
 /**
  * =======================================================
@@ -53,6 +60,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
     private DisplayImageOptions options;
     private List<CircleDynamicBean> datas;
     private int commonPosition;
+    private String deleteItems[] = {"删除评论"};
 
     public CircleFriendAdapter(Context context, OnItemButtonClickListener listener) {
         this.mContext = context;
@@ -97,8 +105,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
     @Override
     public void onBindViewHolder(CircleFriendAdapter.CircleViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_HEAD) {
-            // HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
-            // TODO: 2017/11/5 此处可处理头部数据
+            //  此处可处理头部数据
         } else {
             final int circlePosition = position - HEADVIEW_SIZE;
             commonPosition = circlePosition;
@@ -145,7 +152,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
         LinearLayout praiseListLayout; //点赞名单layout
         LinearLayout linearlayoutComment; //评论layout
         LinearLayout linearlayoutAll; //评论和赞总layout
-        ListView commentList; //评论列表
+        CommentListView commentListView; //评论列表
         ListView praiseListView;//点赞列表
         View line;
 
@@ -166,7 +173,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             this.praiseListLayout = (LinearLayout) convertView.findViewById(R.id.album_praise_list_layout);
             this.linearlayoutComment = (LinearLayout) convertView.findViewById(R.id.linearlayout_comment);
             this.linearlayoutAll = (LinearLayout) convertView.findViewById(R.id.linearlayoutAll);
-            this.commentList = (ListView) convertView.findViewById(R.id.commentList);
+            this.commentListView = (CommentListView) convertView.findViewById(commentList);
             this.praiseListView = (ListView) convertView.findViewById(R.id.praiseListView);
             this.line = convertView.findViewById(R.id.line);
         }
@@ -184,7 +191,6 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             this.usernameTxt.setText(circleDynamicBean.getSender().getUsername());
             String dateSource = circleDynamicBean.getDt();
             this.time.setText(DateUtils.getModularizationDate(Long.parseLong(dateSource)));
-            // 展示内容
             // 判断接受到的是否有表情图片，有则替换
             if (!StringUtils.isEmpty(circleDynamicBean.getContent())) {
                 for (int i = 0; i < EmojiUtils.picStr.length; i++) {
@@ -271,6 +277,42 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                 this.nineGridLayoutView.setUrlList(urlLists);
             } else {
                 this.nineGridLayoutView.setVisibility(View.GONE);
+            }
+            // 处理评论列表
+            final List<CommentsBean> commentsBeanList = circleDynamicBean.getComments();
+            if (null != commentsBeanList && commentsBeanList.size() > 0) {
+                this.linearlayoutAll.setVisibility(View.VISIBLE);
+                this.commentListView.setVisibility(View.VISIBLE);
+                this.commentListView.setDatas(commentsBeanList);
+                // 处理评论列表点击事件
+                this.commentListView.setOnItemClickListener(new CommentListView.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(int commentPosition) {
+                        final CommentsBean commentsBean = commentsBeanList.get(commentPosition);
+                        if (DataTest.curUser.getId().equals(commentsBean.getSender().getId())) {//删除自己的评论
+                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                            builder.setItems(deleteItems, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                    mListener.onDeleteItemButtonClick(circlePosition, commentsBean.getCommentId());
+                                }
+                            });
+                            builder.create().show();
+                        } else { //回复别人的评论
+//                            CommentConfig config = new CommentConfig();
+//                            config.circlePosition = circlePosition;
+//                            config.commentPosition = commentPosition;
+//                            config.commentType = CommentConfig.Type.REPLY;
+//                            config.replyUser = campusNewsComment.getUser();
+//                            mListener.onItemButtonClick(config);
+                        }
+
+                    }
+                });
+            } else {
+                this.commentListView.setVisibility(View.GONE);
+                this.linearlayoutAll.setVisibility(View.GONE);
             }
         }
     }

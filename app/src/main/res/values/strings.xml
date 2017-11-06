@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">朋友圈</string>
+    <string name="app_name">CircleFriend</string>
     <string name="chat_input_hint">说几句吧....</string>
     <string name="send">发送</string>
 </resources>

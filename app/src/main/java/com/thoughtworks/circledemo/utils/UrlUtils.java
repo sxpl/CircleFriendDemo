@@ -1,4 +1,4 @@
-package cn.qtone.xxt.utils;
+package com.thoughtworks.circledemo.utils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,20 +9,21 @@ import android.text.Spanned;
 import android.text.TextUtils;
 import android.view.View;
 
+import com.thoughtworks.circledemo.spannable.SpannableClickable;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import cn.qtone.xxt.spannable.SpannableClickable;
 
 
 /**
  * =======================================================
- * 项目名称:广东和教育APP
- * 版权：Copyright (C) 2014 GuangDong QTONE Technologies Ltd
- * 作者：xszhang
- * 日期：created by 2017/9/8 09:56
- * 版本：V1.0
- * 描述：处理链接相关url
+ * project:CircleFriend
+ * copyright：Copyright (C) 2017 SHANXI XIAN Technologies Ltd
+ * author：xszhang
+ * date：created by 2017/11/6 10:36
+ * version：V1.0
+ * descript：处理链接相关url
  * =======================================================
  */
 public class UrlUtils {
