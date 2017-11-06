@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableString;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +20,7 @@ import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.thoughtworks.circledemo.R;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
+import com.thoughtworks.circledemo.bean.CommentConfig;
 import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.ImageBean;
 import com.thoughtworks.circledemo.bean.PraiseBean;
@@ -63,6 +65,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
     private List<CircleDynamicBean> datas;
     private int commonPosition;
     private String deleteItems[] = {"删除评论"};
+    private long mLastTime = 0;
 
     public CircleFriendAdapter(Context context, OnItemButtonClickListener listener) {
         this.mContext = context;
@@ -329,12 +332,12 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                                 });
                                 builder.create().show();
                             } else { //回复别人的评论
-//                            CommentConfig config = new CommentConfig();
-//                            config.circlePosition = circlePosition;
-//                            config.commentPosition = commentPosition;
-//                            config.commentType = CommentConfig.Type.REPLY;
-//                            config.replyUser = campusNewsComment.getUser();
-//                            mListener.onItemButtonClick(config);
+                                CommentConfig config = new CommentConfig();
+                                config.circlePosition = circlePosition;
+                                config.commentPosition = commentPosition;
+                                config.commentType = CommentConfig.Type.REPLY;
+                                config.replyUser = commentsBean.getSender();
+                                mListener.onItemButtonClick(config);
                             }
 
                         }
@@ -346,6 +349,32 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             } else {
                 this.linearlayoutAll.setVisibility(View.GONE);
             }
+            //判断是否已点赞
+            final String curUserPraiseId = circleDynamicBean.getCurUserPraiseId(DataTest.curUser.getId());
+            if (!TextUtils.isEmpty(curUserPraiseId)) {
+                this.likes.setText("取消");
+                this.likesPicture.setBackgroundResource(R.drawable.circle_dynamic_praise_s);
+            } else {
+                this.likes.setText("赞");
+                this.likesPicture.setBackgroundResource(R.drawable.circle_dynamic_praise_n);
+            }
+            this.likesLayout.setTag(circlePosition + "");
+            this.likesLayout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (System.currentTimeMillis() - mLastTime < 700)//防止快速点击操作
+                        return;
+                    mLastTime = System.currentTimeMillis();
+                    if ("赞".equals(likes.getText().toString().trim())) {
+                        mListener.addPraise(circlePosition);
+                        // 此处可调用接口
+                    } else {
+                        // 取消点赞
+                        mListener.deletePraise(circlePosition, curUserPraiseId);
+                        // 此处可调用接口
+                    }
+                }
+            });
         }
     }
 
@@ -353,13 +382,17 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
      * 对外开放接口
      */
     public interface OnItemButtonClickListener {
-//        void onItemButtonClick(CommentConfig config);
+        // 回复别人的评论
+        void onItemButtonClick(CommentConfig config);
 
+        // 删除动态
         void onDeleteItemButtonClick(int position, int commentId);
 
-        void addFavort(int mCirclePosition);
+        // 添加赞
+        void addPraise(int mCirclePosition);
 
-        void deleteFavort(int mCirclePosition, String mFavorId);
+        // 取消赞
+        void deletePraise(int mCirclePosition, String mFavorId);
     }
 }
 

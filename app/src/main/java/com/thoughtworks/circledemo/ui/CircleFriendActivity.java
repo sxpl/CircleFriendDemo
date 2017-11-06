@@ -13,6 +13,8 @@ import com.malinskiy.superrecyclerview.SuperRecyclerView;
 import com.thoughtworks.circledemo.R;
 import com.thoughtworks.circledemo.adapter.CircleFriendAdapter;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
+import com.thoughtworks.circledemo.bean.CommentConfig;
+import com.thoughtworks.circledemo.bean.PraiseBean;
 import com.thoughtworks.circledemo.utils.DataTest;
 import com.thoughtworks.circledemo.widget.DivItemDecoration;
 
@@ -35,6 +37,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     private CircleFriendAdapter adapter;
     private final static int TYPE_PULL_REFRESH = 1;
     private final static int TYPE_PULL_REFRESHMORE = 2;
+    private CommentConfig commentConfig;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,17 +152,51 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     }
 
     @Override
+    public void onItemButtonClick(CommentConfig config) {
+        commentConfig = config;
+    }
+
+    @Override
     public void onDeleteItemButtonClick(int position, int commentId) {
 
     }
 
     @Override
-    public void addFavort(int mCirclePosition) {
-
+    public void addPraise(int mCirclePosition) {
+        PraiseBean praiseBean = DataTest.createCurUserPraiseItem();
+        updateAddPraise(mCirclePosition, praiseBean);
     }
 
+    /**
+     * 取消赞
+     *
+     * @param mCirclePosition
+     * @param mFavorId
+     */
     @Override
-    public void deleteFavort(int mCirclePosition, String mFavorId) {
+    public void deletePraise(int mCirclePosition, String mFavorId) {
+        CircleDynamicBean item = adapter.getDatas().get(mCirclePosition);
+        List<PraiseBean> items = item.getPraiseList();
+        for (int i = 0; i < items.size(); i++) {
+            if (mFavorId.equals(items.get(i).getId())) {
+                items.remove(i);
+                adapter.notifyDataSetChanged();
+                return;
+            }
+        }
+    }
 
+    /**
+     * 添加赞
+     *
+     * @param circlePosition
+     * @param addItem
+     */
+    public void updateAddPraise(int circlePosition, PraiseBean addItem) {
+        if (addItem != null) {
+            CircleDynamicBean item = adapter.getDatas().get(circlePosition);
+            item.getPraiseList().add(addItem);
+            adapter.notifyDataSetChanged();
+        }
     }
 }

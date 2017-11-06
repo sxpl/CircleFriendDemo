@@ -1,6 +1,8 @@
 package com.thoughtworks.circledemo.bean;
 
 
+import android.text.TextUtils;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -110,5 +112,24 @@ public class CircleDynamicBean implements Serializable {
             return true;
         }
         return false;
+    }
+
+    /**
+     * 获取当前用户的点赞id
+     *
+     * @param curUserId
+     * @return
+     */
+    public String getCurUserPraiseId(String curUserId) {
+        String praiseId = "";
+        if (!TextUtils.isEmpty(curUserId) && hasPraise()) {
+            for (PraiseBean item : praiseList) {
+                if (curUserId.equals(item.getSenderBean().getId())) {
+                    praiseId = item.getId();
+                    return praiseId;
+                }
+            }
+        }
+        return praiseId;
     }
 }

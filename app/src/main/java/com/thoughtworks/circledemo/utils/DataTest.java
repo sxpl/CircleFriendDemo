@@ -246,4 +246,16 @@ public class DataTest {
     public static String getReplyContent() {
         return REPLYCONTENTS[getRandomNum(REPLYCONTENTS.length)];
     }
+
+    /**
+     * 创建当前点赞用户列表
+     *
+     * @return
+     */
+    public static PraiseBean createCurUserPraiseItem() {
+        PraiseBean item = new PraiseBean();
+        item.setId(String.valueOf(favortId++));
+        item.setSenderBean(curUser);
+        return item;
+    }
 }
