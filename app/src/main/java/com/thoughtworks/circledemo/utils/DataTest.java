@@ -4,6 +4,7 @@ package com.thoughtworks.circledemo.utils;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
 import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.ImageBean;
+import com.thoughtworks.circledemo.bean.PraiseBean;
 import com.thoughtworks.circledemo.bean.SenderBean;
 
 import java.util.ArrayList;
@@ -106,9 +107,47 @@ public class DataTest {
             circleDyBean.setDt(String.valueOf(System.currentTimeMillis()));
             circleDyBean.setImages(createPhotos());
             circleDyBean.setComments(createCommentItemList());
+            circleDyBean.setPraiseList(createPraiseItemList());
             list.add(circleDyBean);
         }
         return list;
+    }
+
+    /**
+     * 创建点赞列表
+     *
+     * @return
+     */
+    public static List<PraiseBean> createPraiseItemList() {
+        int size = getRandomNum(users.size());
+        List<PraiseBean> items = new ArrayList<PraiseBean>();
+        List<String> history = new ArrayList<String>();
+        if (size > 0) {
+            for (int i = 0; i < size; i++) {
+                PraiseBean newItem = createPraiseItem();
+                String userId = newItem.getSenderBean().getId();
+                if (!history.contains(userId)) {
+                    items.add(newItem);
+                    history.add(userId);
+                } else {
+                    i--;
+                }
+            }
+        }
+        return items;
+    }
+
+
+    /**
+     * 创建点赞列表
+     *
+     * @return
+     */
+    public static PraiseBean createPraiseItem() {
+        PraiseBean item = new PraiseBean();
+        item.setId(String.valueOf(favortId++));
+        item.setSenderBean(getUser());
+        return item;
     }
 
     public static SenderBean getUser() {

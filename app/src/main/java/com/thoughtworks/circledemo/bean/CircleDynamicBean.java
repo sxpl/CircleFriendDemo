@@ -21,7 +21,8 @@ public class CircleDynamicBean implements Serializable {
     private String content;// 动态内容
     private SenderBean sender;//发送者用户信息
     private List<CommentsBean> comments;//评论信息
-    private List<ImageBean> images;
+    private List<ImageBean> images; // 图片
+    private List<PraiseBean> praiseList;//点赞列表
 
     public int getId() {
         return id;
@@ -77,5 +78,37 @@ public class CircleDynamicBean implements Serializable {
 
     public void setImages(List<ImageBean> images) {
         this.images = images;
+    }
+
+    public List<PraiseBean> getPraiseList() {
+        return praiseList;
+    }
+
+    public void setPraiseList(List<PraiseBean> praiseList) {
+        this.praiseList = praiseList;
+    }
+
+    /**
+     * 是否点赞
+     *
+     * @return
+     */
+    public boolean hasPraise() {
+        if (praiseList != null && praiseList.size() > 0) {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * 是否评论
+     *
+     * @return
+     */
+    public boolean hasComment() {
+        if (comments != null && comments.size() > 0) {
+            return true;
+        }
+        return false;
     }
 }

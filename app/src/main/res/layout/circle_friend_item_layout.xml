@@ -192,7 +192,7 @@
                         android:src="@drawable/praise_icon_s"
                         android:visibility="gone" />
 
-                    <ListView
+                    <com.thoughtworks.circledemo.widget.PraiseListView
                         android:id="@+id/praiseListView"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

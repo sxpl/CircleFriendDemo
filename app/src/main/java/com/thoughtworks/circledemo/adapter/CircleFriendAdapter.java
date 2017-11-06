@@ -12,8 +12,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
@@ -21,6 +21,7 @@ import com.thoughtworks.circledemo.R;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
 import com.thoughtworks.circledemo.bean.CommentsBean;
 import com.thoughtworks.circledemo.bean.ImageBean;
+import com.thoughtworks.circledemo.bean.PraiseBean;
 import com.thoughtworks.circledemo.utils.DataTest;
 import com.thoughtworks.circledemo.utils.DateUtils;
 import com.thoughtworks.circledemo.utils.Emoji;
@@ -28,6 +29,7 @@ import com.thoughtworks.circledemo.utils.EmojiUtils;
 import com.thoughtworks.circledemo.utils.StringUtils;
 import com.thoughtworks.circledemo.widget.CommentListView;
 import com.thoughtworks.circledemo.widget.NineGridLayoutView;
+import com.thoughtworks.circledemo.widget.PraiseListView;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -153,7 +155,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
         LinearLayout linearlayoutComment; //评论layout
         LinearLayout linearlayoutAll; //评论和赞总layout
         CommentListView commentListView; //评论列表
-        ListView praiseListView;//点赞列表
+        PraiseListView praiseListView;//点赞列表
         View line;
 
         public CircleViewHolder(View convertView) {
@@ -174,7 +176,7 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             this.linearlayoutComment = (LinearLayout) convertView.findViewById(R.id.linearlayout_comment);
             this.linearlayoutAll = (LinearLayout) convertView.findViewById(R.id.linearlayoutAll);
             this.commentListView = (CommentListView) convertView.findViewById(commentList);
-            this.praiseListView = (ListView) convertView.findViewById(R.id.praiseListView);
+            this.praiseListView = (PraiseListView) convertView.findViewById(R.id.praiseListView);
             this.line = convertView.findViewById(R.id.line);
         }
 
@@ -278,40 +280,70 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             } else {
                 this.nineGridLayoutView.setVisibility(View.GONE);
             }
+            // 处理点赞列表
+            final List<PraiseBean> praiseBeanList = circleDynamicBean.getPraiseList();
             // 处理评论列表
             final List<CommentsBean> commentsBeanList = circleDynamicBean.getComments();
-            if (null != commentsBeanList && commentsBeanList.size() > 0) {
+            boolean hasPraise = circleDynamicBean.hasPraise();
+            boolean hasComment = circleDynamicBean.hasComment();
+            if (hasPraise || hasComment) {
                 this.linearlayoutAll.setVisibility(View.VISIBLE);
-                this.commentListView.setVisibility(View.VISIBLE);
-                this.commentListView.setDatas(commentsBeanList);
-                // 处理评论列表点击事件
-                this.commentListView.setOnItemClickListener(new CommentListView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(int commentPosition) {
-                        final CommentsBean commentsBean = commentsBeanList.get(commentPosition);
-                        if (DataTest.curUser.getId().equals(commentsBean.getSender().getId())) {//删除自己的评论
-                            AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
-                            builder.setItems(deleteItems, new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    dialog.dismiss();
-                                    mListener.onDeleteItemButtonClick(circlePosition, commentsBean.getCommentId());
-                                }
-                            });
-                            builder.create().show();
-                        } else { //回复别人的评论
+                //处理点赞列表
+                if (hasPraise) {
+                    this.line.setVisibility(View.VISIBLE);
+                    this.praiseListLayout.setVisibility(View.VISIBLE);
+                    this.praiseListView.setVisibility(View.VISIBLE);
+                    this.parise_icon.setVisibility(View.VISIBLE);
+                    this.praiseListView.setDatas(praiseBeanList);
+                    this.praiseListView.setOnItemClickListener(new PraiseListView.OnItemClickListener() {
+                        @Override
+                        public void onClick(int position) {
+                            String userName = praiseBeanList.get(position).getSenderBean().getUsername();
+                            String userId = praiseBeanList.get(position).getSenderBean().getId();
+                            Toast.makeText(mContext, userName + " &id = " + userId, Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                } else {
+                    this.praiseListLayout.setVisibility(View.GONE);
+                    this.line.setVisibility(View.GONE);
+                    this.praiseListView.setVisibility(View.GONE);
+                    this.parise_icon.setVisibility(View.GONE);
+                }
+                // 处理评论列表
+                if (hasComment) {
+                    this.commentListView.setVisibility(View.VISIBLE);
+                    this.commentListView.setDatas(commentsBeanList);
+                    // 处理评论列表点击事件
+                    this.commentListView.setOnItemClickListener(new CommentListView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(int commentPosition) {
+                            final CommentsBean commentsBean = commentsBeanList.get(commentPosition);
+                            if (DataTest.curUser.getId().equals(commentsBean.getSender().getId())) {//删除自己的评论
+                                AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+                                builder.setItems(deleteItems, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                        mListener.onDeleteItemButtonClick(circlePosition, commentsBean.getCommentId());
+                                    }
+                                });
+                                builder.create().show();
+                            } else { //回复别人的评论
 //                            CommentConfig config = new CommentConfig();
 //                            config.circlePosition = circlePosition;
 //                            config.commentPosition = commentPosition;
 //                            config.commentType = CommentConfig.Type.REPLY;
 //                            config.replyUser = campusNewsComment.getUser();
 //                            mListener.onItemButtonClick(config);
-                        }
+                            }
 
-                    }
-                });
+                        }
+                    });
+                } else {
+                    this.commentListView.setVisibility(View.GONE);
+                    this.linearlayoutAll.setVisibility(View.GONE);
+                }
             } else {
-                this.commentListView.setVisibility(View.GONE);
                 this.linearlayoutAll.setVisibility(View.GONE);
             }
         }
