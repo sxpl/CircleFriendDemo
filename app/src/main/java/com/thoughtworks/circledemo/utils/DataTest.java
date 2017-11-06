@@ -71,13 +71,13 @@ public class DataTest {
             "http://img5.imgtn.bdimg.com/it/u=2024625579,507531332&fm=21&gp=0.jpg",
             "http://pic51.nipic.com/file/20141027/11284670_094822707000_2.jpg"};
     public static List<SenderBean> users = new ArrayList<SenderBean>();
-    public static final SenderBean curUser = new SenderBean("10000", "自己", "小张", "http://www.feizl.com/upload2007/2014_06/1406272351394618.png");
+    public static final SenderBean curUser = new SenderBean("10000", "John Smith", "jsmith", "http://info.thoughtworks.com/rs/thoughtworks2/images/glyph_badge.png");
     public static List<ImageBean> PHOTOS = new ArrayList<>();
 
     static {
         SenderBean user1 = new SenderBean("1", "吃鱼卡死的猫", "吃鱼卡死的猫", HEADIMG[1]);
         SenderBean user2 = new SenderBean("2", "因帅被判刑", "因帅被判刑", HEADIMG[2]);
-        SenderBean user3 = new SenderBean("3", "隔壁老王", "隔壁老王", HEADIMG[3]);
+        SenderBean user3 = new SenderBean("3", "Kotlin", "Kotlin", HEADIMG[3]);
         SenderBean user4 = new SenderBean("4", "爱像一阵风", "爱像一阵风", HEADIMG[4]);
         SenderBean user5 = new SenderBean("5", "杀死比尔", "杀死比尔", HEADIMG[5]);
         SenderBean user6 = new SenderBean("6", "Kobe", "Kobe", HEADIMG[6]);

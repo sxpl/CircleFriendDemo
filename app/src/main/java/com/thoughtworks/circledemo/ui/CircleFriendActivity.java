@@ -459,7 +459,6 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
                 if (json != null) {
                     Log.d("okHttp", json);
                     list = DataTest.getCircleDyData(json);
-
                 }
             }
         });

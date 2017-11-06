@@ -111,6 +111,9 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
     public void onBindViewHolder(CircleFriendAdapter.CircleViewHolder holder, int position) {
         if (getItemViewType(position) == TYPE_HEAD) {
             //  此处可处理头部数据
+            HeaderViewHolder headerViewHolder = (HeaderViewHolder) holder;
+            imageLoader.displayImage(TextUtils.isEmpty(DataTest.curUser.getAvatar()) ? "" : DataTest.curUser.getAvatar(), headerViewHolder.imageViewHead, options);
+            headerViewHolder.tvNickName.setText(DataTest.curUser.getNick());
         } else {
             final int circlePosition = position - HEADVIEW_SIZE;
             commonPosition = circlePosition;
@@ -315,7 +318,6 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                 } else {
                     this.praiseListLayout.setVisibility(View.GONE);
                 }
-
                 // 处理评论列表
                 if (hasComment) {
                     this.commentListView.setVisibility(View.VISIBLE);
@@ -351,7 +353,6 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
             } else {
                 this.linearlayoutAll.setVisibility(View.GONE);
             }
-
             //判断是否已点赞
             final String curUserPraiseId = circleDynamicBean.getCurUserPraiseId(DataTest.curUser.getId());
             if (!TextUtils.isEmpty(curUserPraiseId)) {
