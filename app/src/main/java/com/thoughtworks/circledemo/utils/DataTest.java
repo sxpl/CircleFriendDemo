@@ -1,6 +1,8 @@
 package com.thoughtworks.circledemo.utils;
 
 
+import android.text.TextUtils;
+
 import com.alibaba.fastjson.JSON;
 import com.thoughtworks.circledemo.bean.CircleDynamicBean;
 import com.thoughtworks.circledemo.bean.CommentsBean;
@@ -127,6 +129,10 @@ public class DataTest {
                 for (int i = 0; i < array.length(); i++) {
                     JSONObject jsonObject = array.getJSONObject(i);
                     CircleDynamicBean circle = JSON.parseObject(jsonObject.toString(), CircleDynamicBean.class);
+                    //忽略不包含内容和图片的推文
+                    if (TextUtils.isEmpty(circle.getContent()) && (circle.getImages() == null || circle.getImages().size() == 0)) {
+                        continue;
+                    }
                     circle.setId(circleId++);
                     circle.setPraiseList(createPraiseItemList());
                     circle.setDt(String.valueOf(System.currentTimeMillis()));

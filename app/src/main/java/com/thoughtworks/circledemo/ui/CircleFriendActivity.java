@@ -34,6 +34,7 @@ import com.thoughtworks.circledemo.widget.CommentListView;
 import com.thoughtworks.circledemo.widget.DivItemDecoration;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Call;
@@ -198,7 +199,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
         }
         adapter.notifyDataSetChanged();
         if (null != adapter.getDatas() && adapter.getDatas().size() > 0) {
-            if (adapter.getDatas().size() < 5 + CircleFriendAdapter.HEADVIEW_SIZE) {
+            if (adapter.getDatas().size() < 100 + CircleFriendAdapter.HEADVIEW_SIZE) {
                 recyclerView.setupMoreListener(new OnMoreListener() {
                     @Override
                     public void onMoreAsked(int overallItemsCount, int itemsBeforeMore, int maxLastVisiblePosition) {
@@ -315,7 +316,13 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
     public void updateAddComment(int circlePosition, CommentsBean addItem) {
         if (addItem != null) {
             CircleDynamicBean item = adapter.getDatas().get(circlePosition);
-            item.getComments().add(addItem);
+            if (null != item.getComments()) {
+                item.getComments().add(addItem);
+            } else {
+                List<CommentsBean> list = new ArrayList<>();
+                list.add(addItem);
+                item.setComments(list);
+            }
             adapter.notifyDataSetChanged();
         }
         //清空评论文本

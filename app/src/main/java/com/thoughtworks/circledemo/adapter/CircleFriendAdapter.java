@@ -295,7 +295,11 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                 this.linearlayoutAll.setVisibility(View.VISIBLE);
                 //处理点赞列表
                 if (hasPraise) {
-                    this.line.setVisibility(View.VISIBLE);
+                    if (hasComment) {
+                        this.line.setVisibility(View.VISIBLE);
+                    } else {
+                        this.line.setVisibility(View.GONE);
+                    }
                     this.praiseListLayout.setVisibility(View.VISIBLE);
                     this.praiseListView.setVisibility(View.VISIBLE);
                     this.parise_icon.setVisibility(View.VISIBLE);
@@ -310,10 +314,8 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                     });
                 } else {
                     this.praiseListLayout.setVisibility(View.GONE);
-                    this.line.setVisibility(View.GONE);
-                    this.praiseListView.setVisibility(View.GONE);
-                    this.parise_icon.setVisibility(View.GONE);
                 }
+
                 // 处理评论列表
                 if (hasComment) {
                     this.commentListView.setVisibility(View.VISIBLE);
@@ -341,16 +343,15 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                                 config.replyUser = commentsBean.getSender();
                                 mListener.onItemButtonClick(config);
                             }
-
                         }
                     });
                 } else {
                     this.commentListView.setVisibility(View.GONE);
-                    this.linearlayoutAll.setVisibility(View.GONE);
                 }
             } else {
                 this.linearlayoutAll.setVisibility(View.GONE);
             }
+
             //判断是否已点赞
             final String curUserPraiseId = circleDynamicBean.getCurUserPraiseId(DataTest.curUser.getId());
             if (!TextUtils.isEmpty(curUserPraiseId)) {
@@ -368,8 +369,12 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                         return;
                     mLastTime = System.currentTimeMillis();
                     if ("赞".equals(likes.getText().toString().trim())) {
-                        if (!(hasPraise || hasComment)) {//如果赞和评论都为空，此处需要做处理
+                        if (!(hasPraise && hasComment)) {//如果赞和评论都为空，此处需要做处理
                             linearlayoutAll.setVisibility(View.VISIBLE);
+                            line.setVisibility(View.VISIBLE);
+                            praiseListLayout.setVisibility(View.VISIBLE);
+                            praiseListView.setVisibility(View.VISIBLE);
+                            parise_icon.setVisibility(View.VISIBLE);
                         }
                         mListener.addPraise(circlePosition);
                         // 此处可调用接口
