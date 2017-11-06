@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+
+    <TextView
+        android:id="@+id/albume_sender"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:lineSpacingMultiplier="1.1"
+        android:padding="@dimen/dimen_04"
+        android:text="张兴胜的家长"
+        android:textColor="#222222"
+        android:textSize="@dimen/size_13" />
+
+
+</LinearLayout>
+
+
