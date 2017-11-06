@@ -140,6 +140,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
                 if (commentConfig.commentType == CommentConfig.Type.PUBLIC) { //自己发表评论
                     commentsBean = DataTest.createPublicComment(content);
                 } else if (commentConfig.commentType == CommentConfig.Type.REPLY) {//回复别人的评论
+                    commentsBean = DataTest.createReplyComment(commentConfig.replyUser, content);
                 }
                 updateAddComment(commentConfig.circlePosition, commentsBean);
                 updateEditTextBodyVisible(View.GONE, null);

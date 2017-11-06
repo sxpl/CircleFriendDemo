@@ -271,4 +271,17 @@ public class DataTest {
         item.setSender(curUser);
         return item;
     }
+    /**
+     * 创建回复评论
+     *
+     * @return
+     */
+    public static CommentsBean createReplyComment(SenderBean replyUser, String content) {
+        CommentsBean item = new CommentsBean();
+        item.setCommentId(commentId++);
+        item.setContent(content);
+        item.setSender(curUser);
+        item.setToReplyUser(replyUser);
+        return item;
+    }
 }

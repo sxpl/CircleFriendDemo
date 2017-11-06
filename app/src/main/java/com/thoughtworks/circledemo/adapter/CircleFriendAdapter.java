@@ -385,6 +385,32 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                     mListener.onItemButtonClick(config);
                 }
             });
+            // 删除功能
+            this.deleteTv.setTag(circlePosition + "");
+            this.deleteTv.setText(DataTest.curUser.getId().equals(circleDynamicBean.getSender().getId()) ? "删除" : "");
+            this.deleteTv.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(mContext); // MainActivity.this必须是当前activity的context，不能通过getApplicationContex获取context
+                    builder.setTitle("操作提示");
+                    builder.setMessage("是否删除朋友圈动态？");
+                    builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                            Toast.makeText(mContext, "点击了删除", Toast.LENGTH_SHORT);
+                        }
+                    });
+
+                    builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    builder.show();
+                }
+            });
         }
     }
 
