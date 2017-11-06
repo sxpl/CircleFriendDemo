@@ -375,6 +375,16 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                     }
                 }
             });
+            // 评论
+            this.linearlayoutComment.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    CommentConfig config = new CommentConfig();
+                    config.circlePosition = circlePosition;
+                    config.commentType = CommentConfig.Type.PUBLIC;
+                    mListener.onItemButtonClick(config);
+                }
+            });
         }
     }
 
