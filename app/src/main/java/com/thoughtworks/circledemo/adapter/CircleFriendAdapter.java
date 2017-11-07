@@ -264,8 +264,11 @@ public class CircleFriendAdapter extends RecyclerView.Adapter<CircleFriendAdapte
                 for (int i = 0; i < results.size(); i++) {
                     this.content.append((CharSequence) results.get(i));
                 }
-            } else {
+            } else if (!TextUtils.isEmpty(circleDynamicBean.getContent())) {
                 this.content.setText(circleDynamicBean.getContent());
+                this.content.setVisibility(View.VISIBLE);
+            } else {
+                this.content.setVisibility(View.GONE);
             }
             // 处理图片
             Collection<ImageBean> imageList = circleDynamicBean.getImages();

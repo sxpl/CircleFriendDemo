@@ -180,7 +180,6 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
      * @param loadType
      */
     public void loadData(int loadType) {
-//        List<CircleDynamicBean> list = DataTest.getCircleDyList();
         updateLoadData(loadType, list);
     }
 
@@ -195,7 +194,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
             recyclerView.setRefreshing(false);
             adapter.setDatas(datas);
         } else if (loadType == TYPE_PULL_REFRESHMORE) {//加载底部更多
-            adapter.getDatas().addAll(datas);
+            adapter.getDatas().addAll(datas.subList(0, 5));//取5条
         }
         adapter.notifyDataSetChanged();
         if (null != adapter.getDatas() && adapter.getDatas().size() > 0) {
@@ -212,7 +211,7 @@ public class CircleFriendActivity extends Activity implements CircleFriendAdapte
                         }, 2000);
 
                     }
-                }, 1);
+                }, 5);
             } else {
                 recyclerView.removeMoreListener();
                 recyclerView.hideMoreProgress();
