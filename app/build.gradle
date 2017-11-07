@@ -76,7 +76,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     // 添加下拉刷新库
     compile 'com.malinskiy:superrecyclerview:1.1.4'
-    compile 'com.android.support:recyclerview-v7:23.0.0'
     //json 解析
     compile 'com.alibaba:fastjson:1.2.9'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
