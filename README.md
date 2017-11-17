@@ -9,3 +9,6 @@
 2、加强细节处理
 3、可自定义图片加载器
  
+===效果图===
+![image](https://github.com/sxpl/CircleFriendDemo/blob/master/img/Screenshot_1510887448.png)
+![image](https://github.com/sxpl/CircleFriendDemo/blob/master/img/Screenshot_1510887456.png)
